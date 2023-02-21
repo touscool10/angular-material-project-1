@@ -21,7 +21,7 @@ export class CoursesCardListComponent implements OnInit {
 
     editCourse(course:Course) {
 
-
+      alert('edit course:' + JSON.stringify(course));
     }
 
 }

@@ -6,8 +6,9 @@
 }
 
 .course-actions {
-    display: flex;
+  display: flex;
   justify-content: center;
+  padding-bottom: 10px;
 }
 
 .course-actions button {
