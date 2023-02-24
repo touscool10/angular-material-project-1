@@ -1,6 +1,7 @@
 <div [formGroup]="form" class="course-details-form">
 
-  <mat-form-field floatLabel="always">
+  <mat-form-field floatLabel="always" appearance="outline" class="mt-3">
+    <mat-label>Course Title</mat-label>
     <input matInput placeholder="Course Title" formControlName="title" #title>
 
     <mat-hint align="end">
@@ -21,6 +22,7 @@
   </mat-radio-group>
 
   <mat-form-field appearance="outline">
+    <mat-label>Select Category</mat-label>
     <mat-select formControlName="category" placeholder="Select Category">
 
       <mat-option>None</mat-option>
@@ -39,13 +41,24 @@
 
   <mat-form-field>
     <input matInput formControlName="releasedAt"
-    placeholder="Release date"
-    [matDatepicker]="releasedAtPicker">
+                          [matDatepicker]="releaseAtDatepicker">
 
-    <mat-datepicker-toggle matSuffix [for]="releasedAtPicker"></mat-datepicker-toggle>
+    <mat-datepicker-toggle matSuffix [for]="releaseAtDatepicker"></mat-datepicker-toggle>
 
-    <mat-datepicker #releasedAtPicker></mat-datepicker>
+    <mat-datepicker #releaseAtDatepicker [dateClass]="dateClass"></mat-datepicker>
+  </mat-form-field>
 
+  <mat-checkbox class="margin-b-checkbox" color="primary"  formControlName="downloadsAllowed">
+    Downloads Allowed ?
+  </mat-checkbox>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Description</mat-label>
+    <textarea matInput placeholder="Description"
+    formControlName="longDescription"
+    cdkTextareaAutosize cdkAutosizeMinRows="2"
+    cdkAutosizeMaxRows="10">
+    </textarea>
   </mat-form-field>
 
 </div>
