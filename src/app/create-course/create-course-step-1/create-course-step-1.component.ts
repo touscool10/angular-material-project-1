@@ -15,7 +15,7 @@ export class CreateCourseStep1Component {
       Validators.minLength(5),
       Validators.maxLength(60)
     ]],
-    releasedAt: [new Date(), Validators.required],
+    releasedAt: [new Date(1990,11,10), Validators.required],
     category: ['BEGINNER', Validators.required],
     courseType: ['premium', Validators.required],
     downloadsAllowed: [false, Validators.requiredTrue],
@@ -28,6 +28,10 @@ export class CreateCourseStep1Component {
 
   get courseTitle() {
     return this.form.controls['title'];
+  }
+
+  showDate(){
+    console.log(this.form.get('releasedAt').value);
   }
 
 }
