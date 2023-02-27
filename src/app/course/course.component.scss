@@ -64,8 +64,11 @@ mat-paginator {
 .mat-column-description {
   padding-left:20px;
   text-align: left;
+  border-right: 1px solid black;
 }
 
 .mat-column-duration {
   font-style: italic;
+  text-align: center;
 }
+

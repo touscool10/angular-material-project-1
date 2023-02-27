@@ -5,8 +5,9 @@ import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
 import {Course} from "../model/course";
 import {CoursesService} from "../services/courses.service";
-import {debounceTime, distinctUntilChanged, startWith, tap, delay} from 'rxjs/operators';
-import {merge, fromEvent} from "rxjs";
+import {debounceTime, distinctUntilChanged, startWith, tap, delay, map, catchError, finalize} from 'rxjs/operators';
+import {merge, fromEvent, Observable, throwError} from "rxjs";
+import { Lesson } from '../model/lesson';
 
 
 @Component({
@@ -17,8 +18,15 @@ import {merge, fromEvent} from "rxjs";
 export class CourseComponent implements OnInit, AfterViewInit {
 
     course:Course;
+    loading: boolean = false;
+    lessons: Lesson[];
+    pageIndex: number = 0;
+    pageSize: number = 3;
 
-    lessons = [
+    @ViewChild('paginator')
+    paginator: MatPaginator;
+
+    /*lessons = [
        {
         id: 120,
         'description': 'Introduction to Angular Material',
@@ -96,22 +104,61 @@ export class CourseComponent implements OnInit, AfterViewInit {
         'seqNo': 11,
         courseId: 11
       }
-    ];
+    ];*/
 
     constructor(private route: ActivatedRoute,
                 private coursesService: CoursesService) {
 
     }
 
+    displayedColumns = ['seqNo', 'description', 'duration'];
+
     ngOnInit() {
 
         this.course = this.route.snapshot.data["course"];
 
+        this.loadLessonsPage();
+    }
+
+    loadLessonsPage() {
+
+      this.loading = true;
+      this.coursesService.findLessons(
+        this.course.id,
+        'asc',
+        this.pageIndex ,
+        this.pageSize)
+      .pipe(
+        tap(less => this.lessons = less),
+        catchError(err => {
+          console.log("Error loading lessons", err);
+          alert("Error loading lessons");
+          this.loading = false;
+          return throwError(err);
+        }),
+        finalize(() => this.loading = false)
+      )
+      .subscribe();
 
     }
 
-    ngAfterViewInit() {
+    handlePageEvent($event){
 
+      this.pageIndex =  $event.pageIndex;
+      this.pageSize = $event.pageSize;
+      this.loadLessonsPage();
+    }
+
+    ngAfterViewInit() {
+    /*
+      this.paginator.page
+      .pipe(
+        tap( () => {
+          this.loadLessonsPage();
+        } )
+      )
+      .subscribe();
+    */
 
     }
 
